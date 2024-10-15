@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+</head>
+<style>
+        .body
+        {
+            background-color: antiquewhite;
+        }
+        .header 
+        {
+            text-align: center;
+            color: rgb(95, 45, 24);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 50px;
+            outline-style: double;
+        }
+        .tagLine
+        {
+            text-align: center;
+            color: rgb(95, 45, 24);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        .tasknameLabel
+        {
+            color: rgb(95, 45, 24);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            position:relative;
+            left: 490px;
+            font-size: 10px;
+        }
+        .duedateLabel
+        {
+            color: rgb(95, 45, 24);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            position:relative;
+            left: 680px;
+            bottom: 28px;
+            font-size: 10px;
+        }
+        .addtaskButton
+        {
+            background-color: #a06a22;
+            color: white;
+            border-style: ridge;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+            position:relative;
+            right:240px;
+            top: 20px;
+        }
+        .deleteButton
+        {
+            background-color: #a06a22;
+            color: white;
+            border-style: ridge;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+            position:relative;
+        }
+        button:hover
+        {
+            background-color: #5f2d18;
+        }
+        .taskList
+        {
+            position:relative;
+            left: 370px;
+            top: 20px;
+        }
+        input
+        {
+            text-align: center;
+            color: rgb(95, 45, 24);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            position:relative;
+            top: 20px;
+            right: 240px;
+        }
+</style>
+<body class = "body">
+
+    <h1 class = "header">To Do List</h1>
+    <p class = "tagLine">You can list your tasks here — you can't keep it all in your head.</p>
+    <p class = "tasknameLabel">Task Name</label>
+    <p class = "duedateLabel">Due Date</label>
+    <input type="text" id="taskInput" placeholder="Enter Task">
+    <input type="date" id="deadline" placeholder="Enter Date">
+    <button class="addtaskButton" onclick="addTask()">+</button>
+
+    <ul id="taskList" class="taskList"></ul>
+
+    <script>
+        // Task object constructor
+        function Task(name) {
+            this.name = name;
+            this.dateAdded = new Date().toLocaleString();
+        }
+
+        // Task Manager object
+        const taskManager = {
+            tasks: [],
+            
+            // Add a new task
+            addTask(taskName) {
+                const newTask = new Task(taskName);
+                this.tasks.push(newTask);
+                this.displayTasks();
+            },
+
+            // Delete a task
+            deleteTask(index) {
+                this.tasks.splice(index, 1);
+                this.displayTasks();
+            },
+
+            // Display tasks
+            displayTasks() {
+                const taskList = document.getElementById('taskList');
+                taskList.innerHTML = '';
+                this.tasks.forEach((task, index) => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `${task.name} - Added on: ${task.dateAdded} 
+                    <button class = "deleteButton" onclick="deleteTask(${index})">Delete</button>`;
+                    taskList.appendChild(listItem);
+                });
+            }
+        };
+
+        // Function to handle adding a task
+        function addTask() {
+            const taskInput = document.getElementById("taskInput").value;
+            const dueDate = document.getElementById("deadline").value;
+
+            if(!taskInput || !dueDate){
+                alert("Please enter a valid task and due date.")
+                return;
+            }
+            else{
+                const taskName = taskInput + " (Due Date: " + dueDate + ")";
+                taskManager.addTask(taskName);
+                taskInput.value = ''; // Clear input field after adding
+            }
+        }
+
+        // Function to delete a task
+        function deleteTask(index) {
+            taskManager.deleteTask(index);
+        }
+    </script>
+</body>
+</html>
